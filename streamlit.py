@@ -125,7 +125,8 @@ if st.button('Predict'):
     
     
         try:
-            response = requests.post('http://127.0.0.1:8000/predict/', json=data, timeout=10)
+            response = requests.post('https://cancer-project-68fadaecc9a0.herokuapp.com/predict/', json=data, timeout=10)
+
             
             if response.status_code == 200:
                 diagnosis = response.json()['diagnosis']
