@@ -1,5 +1,10 @@
 import streamlit as st
 import requests
+import joblib
+
+# Load the saved model
+model = joblib.load('best_model.pkl', mmap_mode=None)
+
 
 st.markdown(
     """
@@ -91,58 +96,44 @@ fractal_dimension_worst = st.number_input('Input fractal_dimension_worst', value
 if st.button('Predict'):
     with st.spinner('Predicting...'):
         data = {
-        'radius_mean': radius_mean,
-        'texture_mean': texture_mean,
-        'perimeter_mean': perimeter_mean,
-        'area_mean': area_mean,
-        'smoothness_mean': smoothness_mean,
-        'compactness_mean': compactness_mean,
-        'concavity_mean': concavity_mean,
-        'concave_points_mean': concave_points_mean,
-        'symmetry_mean': symmetry_mean,
-        'fractal_dimension_mean': fractal_dimension_mean,
-        'radius_se': radius_se,
-        'texture_se': texture_se,
-        'perimeter_se': perimeter_se,
-        'area_se': area_se,
-        'smoothness_se': smoothness_se,
-        'compactness_se': compactness_se,
-        'concavity_se': concavity_se,
-        'concave_points_se': concave_points_se,
-        'symmetry_se': symmetry_se,
-        'fractal_dimension_se': fractal_dimension_se,
-        'radius_worst': radius_worst,
-        'texture_worst': texture_worst,
-        'perimeter_worst': perimeter_worst,
-        'area_worst': area_worst,
-        'smoothness_worst': smoothness_worst,
-        'compactness_worst': compactness_worst,
-        'concavity_worst': concavity_worst,
-        'concave_points_worst': concave_points_worst,
-        'symmetry_worst': symmetry_worst,
-        'fractal_dimension_worst': fractal_dimension_worst
-    }
-    
-    
+            'radius_mean': radius_mean,
+            'texture_mean': texture_mean,
+            'perimeter_mean': perimeter_mean,
+            'area_mean': area_mean,
+            'smoothness_mean': smoothness_mean,
+            'compactness_mean': compactness_mean,
+            'concavity_mean': concavity_mean,
+            'concave_points_mean': concave_points_mean,
+            'symmetry_mean': symmetry_mean,
+            'fractal_dimension_mean': fractal_dimension_mean,
+            'radius_se': radius_se,
+            'texture_se': texture_se,
+            'perimeter_se': perimeter_se,
+            'area_se': area_se,
+            'smoothness_se': smoothness_se,
+            'compactness_se': compactness_se,
+            'concavity_se': concavity_se,
+            'concave_points_se': concave_points_se,
+            'symmetry_se': symmetry_se,
+            'fractal_dimension_se': fractal_dimension_se,
+            'radius_worst': radius_worst,
+            'texture_worst': texture_worst,
+            'perimeter_worst': perimeter_worst,
+            'area_worst': area_worst,
+            'smoothness_worst': smoothness_worst,
+            'compactness_worst': compactness_worst,
+            'concavity_worst': concavity_worst,
+            'concave_points_worst': concave_points_worst,
+            'symmetry_worst': symmetry_worst,
+            'fractal_dimension_worst': fractal_dimension_worst
+        }
+
         try:
-            response = requests.post('https://cancer-project-68fadaecc9a0.herokuapp.com/predict/', json=data, timeout=10)
-
-            
-            if response.status_code == 200:
-                diagnosis = response.json()['diagnosis']
-                st.write(f'The prediction is {diagnosis}')
-            else:
-                st.error(f"Error occurred: {response.text}")
-
-        except requests.ConnectionError:
-            st.error("Error connecting to the server. Please ensure the server is running and try again.")
-        except requests.Timeout:
-            st.error("Server took too long to respond. Please try again later.")
+            # Make predictions using the loaded model
+            diagnosis = model.predict([list(data.values())])[0]
+            st.write(f'The prediction is {diagnosis}')
         except Exception as e:
             st.error(f"An error occurred: {e}")
 
-
-
 # Copyright footer
-st.markdown("<div class='footer'> &copy; Nyanda Jr @2023</div>", unsafe_allow_html=True)
-
+st.markdown("<div class='footer'> &copy; Nyanda Jr @2024</div>", unsafe_allow_html=True)
