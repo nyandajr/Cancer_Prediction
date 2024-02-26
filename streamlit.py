@@ -130,10 +130,15 @@ if st.button('Predict'):
 
         try:
             # Make predictions using the loaded model
-            diagnosis = model.predict([list(data.values())])[0]
-            st.write(f'The prediction is {diagnosis}')
+            diagnosis_code = model.predict([list(data.values())])[0]
+            
+            # Map the diagnosis code to diagnosis label
+            diagnosis_label = "Malignant" if diagnosis_code == 1 else "Benign"
+            
+            st.write(f'The prediction is {diagnosis_label}')
         except Exception as e:
             st.error(f"An error occurred: {e}")
+
 
 # Copyright footer
 st.markdown("<div class='footer'> &copy; Nyanda Jr @2024</div>", unsafe_allow_html=True)
