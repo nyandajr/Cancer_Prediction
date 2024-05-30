@@ -22,8 +22,8 @@ To run this project locally, follow these steps:
 
 Clone this repository to your local machine.
 
-bash
-Copy code
+
+
 git clone 
 Install the required dependencies.
 
